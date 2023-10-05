@@ -8,9 +8,18 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+func GetNoteById(id string) map[string]string {
+	notes := db.Notes()
+	note := notes[id]
+	if note == nil {
+		return nil
+	}
+	return note
+}
+
 func handler(request events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
-	var notes = db.Notes()
-	var note = notes[request.PathParameters["id"]]
+
+	note := GetNoteById(request.PathParameters["id"])
 
 	if note == nil {
 		return events.APIGatewayProxyResponse{

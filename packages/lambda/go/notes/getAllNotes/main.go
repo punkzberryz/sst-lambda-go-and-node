@@ -8,8 +8,14 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+func GetAllNotes() map[string]map[string]string {
+	notes := db.Notes()
+	return notes
+}
+
 func handler(request events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
-	response, _ := json.Marshal(db.Notes())
+	notes := GetAllNotes()
+	response, _ := json.Marshal(notes)
 
 	return events.APIGatewayProxyResponse{
 		Body:       string(response),
